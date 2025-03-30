@@ -51,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('takumi'),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -59,7 +58,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => const NextPage()),
                   );
                 },
-                child: const Text('買う'),
+                child: const Text('A'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NextPage()),
+                  );
+                },
+                child: const Text('B'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const NextPage()),
+                  );
+                },
+                child: const Text('C'),
               ),
             ],
           ),

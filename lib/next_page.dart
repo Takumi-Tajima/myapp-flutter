@@ -10,11 +10,21 @@ class NextPage extends StatelessWidget {
       body: Container(
         color: Colors.red,
         child: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text('戻る'),
+          child: Column(
+            children: [
+              Text(
+                'AAA',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('戻る'),
+              ),
+            ],
           ),
         ),
       ),
