@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NextPage extends StatelessWidget {
-  const NextPage({super.key});
+  NextPage({super.key, required this.text});
+
+  String text;
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +14,7 @@ class NextPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Text(
-                'AAA',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
+              Text(text, style: TextStyle(fontSize: 100, color: Colors.white)),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
