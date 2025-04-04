@@ -13,9 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Life Counter',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        scaffoldBackgroundColor: const Color(0xFF1A1A1A), // 明るい黒の背景
       ),
-      home: const MyHomePage(title: 'Life Counter'),
+      home: const MyHomePage(title: 'LIFE COUNTER'),
     );
   }
 }
@@ -88,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final age = _calculateAge(_birthDate!, now);
     
     DateTime targetDate;
-    String targetMessage;
     
     // 年齢による条件分岐は変更なし
     if (age < 73) {
@@ -97,17 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
         _birthDate!.month,
         _birthDate!.day,
       );
-      targetMessage = '73歳まであと';
     } else if (age < 84) {
       targetDate = DateTime(
         _birthDate!.year + 84,
         _birthDate!.month,
         _birthDate!.day,
       );
-      targetMessage = '84歳まであと';
     } else {
       setState(() {
-        _countdownTime = '目標年齢（84歳）を超えています';
+        _countdownTime = 'Well done!';
       });
       return;
     }
@@ -179,61 +177,107 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(widget.title, style: const TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF1A1A1A), // 明るい黒
+        elevation: 0, // 影を削除してモダンな見た目に
+        centerTitle: true, // タイトルを中央に配置
+        title: Text(
+          widget.title, 
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w300, // 細いフォント
+            letterSpacing: 2.0, // 文字間隔を広げる
+          )
+        ),
       ),
       body: Container(
-        color: Colors.black54,
+        color: const Color(0xFF1A1A1A), // 明るい黒の背景
+        padding: const EdgeInsets.symmetric(horizontal: 30.0), // 左右の余白を追加
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 20), // 間隔を追加
-              const SizedBox(height: 20),
+              const SizedBox(height: 40), // 上部の間隔を広げる
+              // モダンなボタンデザイン
               ElevatedButton(
                 onPressed: () => _selectDate(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2A2A2A), // ボタン背景をやや明るく
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 child: Text(
                   _birthDate == null 
-                    ? 'Enter your BOD'
+                    ? 'ENTER YOUR DATE OF BIRTH'
                     : 'DOB: ${_birthDate!.year}/${_birthDate!.month}/${_birthDate!.day}',
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40), // 間隔を広げる
               if (_birthDate != null)
                 Text(
                   _countdownTime,
-                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(
+                    fontSize: 36, 
+                    fontWeight: FontWeight.w300, // より洗練された細いフォント
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),
                 ),
+              const SizedBox(height: 20),
               if (_birthDate != null)
                 Text(
-                  'You’re only ${_calculateAge(_birthDate!, DateTime.now())} years old !!',
-                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  'You are only ${_calculateAge(_birthDate!, DateTime.now())} years old !!',
+                  style: const TextStyle(
+                    fontSize: 20, 
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
+              const SizedBox(height: 40), // 間隔を広げる
               if (_birthDate != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 5),
+                      const Text(
+                        'LIFE PROGRESS',
+                        style: TextStyle(
+                          fontSize: 14, 
+                          color: Colors.white70,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                       ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius: const BorderRadius.all(Radius.circular(6)),
                         child: LinearProgressIndicator(
-                          backgroundColor: Colors.grey.shade800,
+                          backgroundColor: const Color(0xFF2A2A2A), // やや明るい黒
                           valueColor: AlwaysStoppedAnimation<Color>(
                             _calculateAge(_birthDate!, DateTime.now()) < 73 
-                                ? Colors.lightBlueAccent 
+                                ? Colors.amber // 黄色系アクセントカラー
                                 : Colors.green
                           ),
                           minHeight: 20,
                           value: _calculateProgressToAge73(),
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
                       Text(
-                        'You’re life is ${(_calculateProgressToAge73() * 100).toStringAsFixed(6)}% complete',
-                        style: const TextStyle(fontSize: 14, color: Colors.white70),
+                        'You are life is ${(_calculateProgressToAge73() * 100).toStringAsFixed(2)}% complete',
+                        style: const TextStyle(
+                          fontSize: 14, 
+                          color: Colors.white70,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ],
                   ),
@@ -241,10 +285,15 @@ class _MyHomePageState extends State<MyHomePage> {
               const Spacer(), // 残りのスペースを埋める
               if (_birthDate != null && _calculateAge(_birthDate!, DateTime.now()) >= 73 && _calculateAge(_birthDate!, DateTime.now()) < 84)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 40), // 下部の余白を増加
                   child: Text(
-                    '73歳から84歳までの貴重な時間です',
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.yellow),
+                    'Stay healthy from age 73 to 84!',
+                    style: const TextStyle(
+                      fontSize: 20, 
+                      fontWeight: FontWeight.w400, 
+                      color: Colors.amber, // 黄色系アクセントカラー
+                      letterSpacing: 1.0,
+                    ),
                   ),
                 ),
             ],
