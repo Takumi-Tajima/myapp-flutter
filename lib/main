@@ -1,0 +1,171 @@
+.dart
+import 'package:flutter/material.dart';
+import 'dart:async';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Life Counter',
+      theme: ThemeData(
+        // より洗練されたテーマカラー
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
+        fontFamily: 'Roboto', // モダンなフォント
+        scaffoldBackgroundColor: const Color(0xFF1A1A1A), // 明るい黒
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white),
+          titleLarge: TextStyle(color: Colors.white),
+        ),
+      ),
+      home: const MyHomePage(title: 'LIFE COUNTER'),
+    );
+  }
+}
+
+// MyHomePageクラスは変更なし
+
+class _MyHomePageState extends State<MyHomePage> {
+  String _currentTime = '';
+  String _countdownTime = '';
+  DateTime? _birthDate;
+  late Timer _timer;
+
+  // 既存のメソッドはそのまま維持
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1A1A1A), // 明るい黒
+        elevation: 0, // モダンな見た目のために影を削除
+        title: Text(
+          widget.title, 
+          style: const TextStyle(
+            color: Colors.white, 
+            fontWeight: FontWeight.w300, // より洗練された細いフォント
+            letterSpacing: 2.0, // 文字間隔を広げる
+          )
+        ),
+        centerTitle: true, // タイトルを中央に配置
+      ),
+      body: Container(
+        color: const Color(0xFF1A1A1A), // 明るい黒
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0), // 余白を追加
+          child: Center(
+            child: Column(
+              children: [
+                const SizedBox(height: 40), // 間隔を広げる
+                // モダンなボタンデザイン
+                ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2A2A2A), // ボタン背景をやや明るく
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    _birthDate == null 
+                      ? 'ENTER YOUR DATE OF BIRTH'
+                      : 'DOB: ${_birthDate!.year}/${_birthDate!.month}/${_birthDate!.day}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40), // 間隔を広げる
+                if (_birthDate != null) ...[
+                  Text(
+                    _countdownTime,
+                    style: const TextStyle(
+                      fontSize: 36, 
+                      fontWeight: FontWeight.w300, // より洗練された細いフォント
+                      color: Colors.white,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'You're only ${_calculateAge(_birthDate!, DateTime.now())} years old !!',
+                    style: const TextStyle(
+                      fontSize: 20, 
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 40), // 間隔を広げる
+                  // 進捗バーデザインの改善
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'LIFE PROGRESS',
+                          style: TextStyle(
+                            fontSize: 14, 
+                            color: Colors.white70,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(6)),
+                          child: LinearProgressIndicator(
+                            backgroundColor: const Color(0xFF2A2A2A), // やや明るい黒
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              _calculateAge(_birthDate!, DateTime.now()) < 73 
+                                  ? Colors.amber // 黄色系アクセントカラー
+                                  : Colors.green
+                            ),
+                            minHeight: 20,
+                            value: _calculateProgressToAge73(),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'You're life is ${(_calculateProgressToAge73() * 100).toStringAsFixed(2)}% complete',
+                          style: const TextStyle(
+                            fontSize: 14, 
+                            color: Colors.white70,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                const Spacer(), // 残りのスペースを埋める
+                if (_birthDate != null && _calculateAge(_birthDate!, DateTime.now()) >= 73 && _calculateAge(_birthDate!, DateTime.now()) < 84)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40), // 下部の余白を増加
+                    child: Text(
+                      '73歳から84歳までの貴重な時間です',
+                      style: const TextStyle(
+                        fontSize: 20, 
+                        fontWeight: FontWeight.w400, 
+                        color: Colors.amber, // 黄色系アクセントカラー
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
