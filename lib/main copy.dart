@@ -165,16 +165,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  double _calculateProgressToAge73() {
-    if (_birthDate == null) return 0.0;
-    final now = DateTime.now();
-    final age = _calculateAge(_birthDate!, now);
-    if (age >= 73) return 1.0;
-    final totalDays = DateTime(_birthDate!.year + 73, _birthDate!.month, _birthDate!.day).difference(_birthDate!).inDays;
-    final currentDays = now.difference(_birthDate!).inDays;
-    return currentDays / totalDays;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,34 +199,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 Text(
                   'You’re only ${_calculateAge(_birthDate!, DateTime.now())} years old !!',
                   style: const TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              if (_birthDate != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 5),
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.grey.shade800,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            _calculateAge(_birthDate!, DateTime.now()) < 73 
-                                ? Colors.lightBlueAccent 
-                                : Colors.green
-                          ),
-                          minHeight: 20,
-                          value: _calculateProgressToAge73(),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'You’re life is ${(_calculateProgressToAge73() * 100).toStringAsFixed(6)}% complete',
-                        style: const TextStyle(fontSize: 14, color: Colors.white70),
-                      ),
-                    ],
-                  ),
                 ),
               const Spacer(), // 残りのスペースを埋める
               if (_birthDate != null && _calculateAge(_birthDate!, DateTime.now()) >= 73 && _calculateAge(_birthDate!, DateTime.now()) < 84)
